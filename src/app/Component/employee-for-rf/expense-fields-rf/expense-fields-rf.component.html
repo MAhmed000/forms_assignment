@@ -1,0 +1,55 @@
+<div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-outline-success m-4" (click)="AddNewExpense()">
+        <strong>+</strong> Add Expense
+    </button>
+</div>
+
+<div class="total_cost" *ngIf="expenseList.controls.length>0">{{totalCost}}</div>
+
+<div [formGroup]="employeeForm">
+
+<div formArrayName="expense" *ngFor="let item of expenseList.controls;let i=index;">
+    <div class="row mt-4" [formGroupName]="i">
+
+
+        <div class="col-md-4">
+            <label class="form-label">Expense Name</label>
+            <input type="text" class="form-control" placeholder="Expense Name" name="expense_name" formControlName="Expense_name">
+            <span class="text-danger" *ngIf="this.item.get('Expense_name')?.touched && this.item.get('Expense_name').hasError('required')" >*Required </span>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Select Expense Type</label>
+                <select name="Type" class="form-control" formControlName="Type">
+                    <option selected>Select Here</option>
+                    <option *ngFor="let exp of expenseType" [value]="exp.Type">{{exp.Type}}</option>
+                </select>
+                <span class="text-danger" *ngIf="this.item.get('Type')?.touched && this.item.get('Type').hasError('required')">*Required </span>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Expense Date</label>
+            <input type="date" class="form-control" name="exp_date" formControlName="Expense_Date">
+            <span class="text-danger" *ngIf="this.item.get('exp_date')?.touched && this.item.get('exp_date').hasError('required')">*Required </span>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Cost</label>
+            <input type="number" class="form-control" formControlName="cost" (keyup)="getCostValue(expenseList.controls)">
+            <span class="text-danger" *ngIf="this.item.get('cost')?.touched && this.item.get('cost').hasError('required')">*Required</span>
+            <span class="text-danger" *ngIf="this.item.get('cost')?.touched && this.item.get('cost').hasError('max')">Maximum value is 1000.21</span>
+            <span class="text-danger" *ngIf="this.item.get('cost')?.touched && this.item.get('cost').hasError('pattern')">Invalid format. Accepts up to 2 decimal places.</span>
+      </div>
+      <div class="col-md-4"></div>
+          <div class="col-md-3"></div>
+
+    <div class="col-md-1 mt-4" *ngIf="this.expenseList.controls.length>1">
+        <div class="btn btn-danger" (click)="DeleteItem(item)">Delete</div>
+    </div>
+</div>
+
+
+
+</div>
+
+</div>

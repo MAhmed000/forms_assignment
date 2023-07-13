@@ -1,0 +1,49 @@
+
+
+<div class="container">
+    <h2 class="bg-success text-light p-3 mt-2 mb-2 rounded">Employee Form With Reactive Form</h2>
+
+    <h3>Employee Details</h3>
+    <form [formGroup]="employeeForm" (ngSubmit)="Submit()">
+        <div class="row">
+
+            <div class="col-md-4">
+                <label class="form-label">Employee Name</label>
+                <input type="text" class="form-control" placeholder="Employee Name" name="employee_name"  formControlName="employee_name">
+                <span class="text-danger" *ngIf="this.employeeForm.get('employee_name').touched && this.employeeForm.get('employee_name').hasError('required')">*Required </span>
+                <span class="text-danger" *ngIf="this.employeeForm.get('employee_name').touched && (this.employeeForm.get('employee_name').hasError('minlength') || this.employeeForm.get('employee_name').hasError('maxlength'))">*min 3 and max 4 character required</span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Contact No</label>
+                <input type="text" class="form-control" placeholder="03**-*******" name="contact" formControlName="contact">
+                <span class="text-danger p-1" *ngIf="this.employeeForm.get('contact').touched && this.employeeForm.get('contact').hasError('required')">*Required</span>
+                <span class="text-danger p-1" *ngIf="this.employeeForm.get('contact')?.hasError('pattern')
+                && this.employeeForm.get('contact')?.touched"  >Phone no should be 03**-*******</span>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                <label class="form-label">Address (*Optional)</label>
+                <textarea name="address" cols="1" rows="1" class="form-control" placeholder="Address here"  formControlName="address"></textarea>
+            </div>
+
+            <div class="col-md-4 mt-2">
+                <label class="form-label">Select Gender</label>
+                <select name="gender" class="form-control" required="" formControlName="gender_id">
+                    <option disabled>Select Here</option>
+                    <option *ngFor="let gend of gender" [value]="gend.id">{{gend.gender}}</option>
+                </select>
+                <span class="text-danger p-1" *ngIf="this.employeeForm.get('gender_id')?.touched && this.employeeForm.get('gender_id').hasError('required')">*Required</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <h3>Expense Details</h3>
+            <app-expense-fields-rf [employeeForm]="employeeForm" [id]="id"></app-expense-fields-rf>
+        </div>
+
+        <div class="text-center m-4">
+            <button class="btn btn-success btn-lg" [disabled]="employeeForm.invalid" type="submit">Save</button>
+        </div>
+    </form>
+</div>

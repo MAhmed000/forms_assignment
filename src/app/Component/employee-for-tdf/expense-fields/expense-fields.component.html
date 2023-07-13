@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-outline-success m-4" (click)="AddNewExpense()">
+        <strong>+</strong> Add Expense
+    </button>
+</div>
+
+<div *ngIf="this.employee.expense.length>0" class="total_cost">{{totalCost}}</div>
+
+    <ng-container *ngFor="let expense of this.employee.expense" >
+        <div class="row mt-4">
+
+            <div class="col-md-4">
+                <label class="form-label">Expense Name</label>
+                <input type="text" class="form-control" #exp_name="ngModel" placeholder="Expense Name" name="expense_name" required [(ngModel)]="expense.Expense_name">
+                <span class="text-danger" *ngIf="exp_name.invalid && (exp_name.dirty || exp_name.touched)">*Required </span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Select Expense Type</label>
+                    <select name="Type" class="form-control" #type="ngModel" required="" [(ngModel)]="expense.Type">
+                        <option selected>Select Here</option>
+                        <option *ngFor="let exp of expenseType" [value]="exp.Type">{{exp.Type}}</option>
+                    </select>
+                    <span class="text-danger" *ngIf="type.invalid && (type.dirty || type.touched)">*Required </span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Expense Date</label>
+                <input type="date" class="form-control" name="exp_date" #exp_date="ngModel" required [(ngModel)]="expense.Expense_Date">
+                <span class="text-danger" *ngIf="exp_date.invalid && (exp_date.dirty || exp_date.touched)">*Required </span>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Cost</label>
+                <input type="number" class="form-control" #cost="ngModel" (keyup)="getTotalCost(this.employee.expense)" [(ngModel)]="expense.cost" required max="1000.21" pattern="^\d+(\.\d{1,2})?$">
+                <span class="text-danger" *ngIf="cost.invalid && (cost.dirty || cost.touched)">*Required</span>
+                <span class="text-danger" *ngIf="cost.hasError('max')">Maximum value is 1000.21</span>
+                <span class="text-danger" *ngIf="cost.hasError('pattern')">Invalid format. Accepts up to 2 decimal places.</span>
+              </div>
+              <div class="col-md-4"></div>
+              <div class="col-md-3"></div>
+
+              <div class="col-md-1 mt-4" *ngIf="this.employee.expense.length>1">
+                <div class="btn btn-danger" (click)="DeleteItem(expense)">Delete</div>
+              </div>
+        </div>
+    </ng-container>
+

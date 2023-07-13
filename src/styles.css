@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+h3{
+    background: transparent;
+    opacity: 0.5;
+    font-weight: bold;
+    /* padding: 16px 0px; */
+    text-align: center;
+    padding: 24px;
+    text-transform: capitalize;
+    text-decoration: underline;
+}
+
+.total_cost{
+    position: fixed;
+    right: 8px;
+    bottom: 10px;
+    width: 194px;
+    background: red;
+    color: #fff;
+    font-size: 22px;
+    border-radius: 9px;
+    text-align: center;
+    padding: 12px;
+}
+
+.total_cost::before{
+    content: 'Total Cost : ';
+}
