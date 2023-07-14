@@ -39,11 +39,11 @@
 
         <div class="row">
             <h3>Expense Details</h3>
-            <app-expense-fields-rf [employeeForm]="employeeForm" [id]="id"></app-expense-fields-rf>
+            <app-expense-fields-rf [employeeForm]="employeeForm" [id]="id" [singleEmployee]="singleEmployee"></app-expense-fields-rf>
         </div>
 
         <div class="text-center m-4">
-            <button class="btn btn-success btn-lg" [disabled]="employeeForm.invalid" type="submit">Save</button>
+            <button class="btn btn-success btn-lg" [disabled]="employeeForm.invalid" type="submit">{{addEditEmpBtn}}</button>
         </div>
     </form>
 </div>

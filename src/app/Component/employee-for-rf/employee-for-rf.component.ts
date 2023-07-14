@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from 'src/app/Models/Employee.model';
@@ -46,47 +46,47 @@ export class EmployeeForRFComponent implements OnInit {
   a:any;
   initializeForm(){
     // debugger
-    if(this.id){
 
-      this.employeeForm = this.formBuilder.group({
-        employee_id: [this.singleEmployee.employee_id],
-        employee_name: [
-          this.singleEmployee.employee_name,
-          [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(14),
+      if(this.id){
+        this.employeeForm = this.formBuilder.group({
+          employee_id: [this.singleEmployee.employee_id],
+          employee_name: [
+            this.singleEmployee.employee_name,
+            [
+              Validators.required,
+              Validators.minLength(3),
+              Validators.maxLength(14),
+            ],
           ],
-        ],
-        contact: [
-          this.singleEmployee.contact,
-          [Validators.required, Validators.pattern(/^03\d{2}-\d{7}$/)],
-        ],
-        address: [this.singleEmployee.address],
-        gender_id: this.singleEmployee.gender_id,
-        expense: this.formBuilder.array(this.singleEmployee.expense),
-      });
-    }
-    else{
-      this.employeeForm = this.formBuilder.group({
-        employee_id: [this.emp_id],
-        employee_name: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(14),
+          contact: [
+            this.singleEmployee.contact,
+            [Validators.required, Validators.pattern(/^03\d{2}-\d{7}$/)],
           ],
-        ],
-        contact: [
-          '',
-          [Validators.required, Validators.pattern(/^03\d{2}-\d{7}$/)],
-        ],
-        address: [''],
-        gender_id: 0,
-        expense: this.formBuilder.array([]),
-      });
-    }
+          address: [this.singleEmployee.address],
+          gender_id: this.singleEmployee.gender_id,
+          expense: this.formBuilder.array([]),
+        });
+      }else{
+        this.employeeForm = this.formBuilder.group({
+          employee_id: [this.emp_id],
+          employee_name: [
+            '',
+            [
+              Validators.required,
+              Validators.minLength(3),
+              Validators.maxLength(14),
+            ],
+          ],
+          contact: [
+            '',
+            [Validators.required, Validators.pattern(/^03\d{2}-\d{7}$/)],
+          ],
+          address: [''],
+          gender_id: 0,
+          expense: this.formBuilder.array([]),
+        });
+      }
+
   }
 
 
@@ -146,6 +146,9 @@ export class EmployeeForRFComponent implements OnInit {
     else{
       this.editEmployee();
       this.router.navigateByUrl("/show_employee");
+
+      console.log(this.employeeForm.value)
+      this.addEditEmpBtn="Edit Employee"
     }
   }
 }

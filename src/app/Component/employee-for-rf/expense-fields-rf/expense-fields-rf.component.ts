@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Employee } from 'src/app/Models/Employee.model';
+import { Expense } from 'src/app/Models/Expense.model';
 import { EmployeeService } from 'src/app/Services/employee.service';
 
 @Component({
@@ -7,11 +9,13 @@ import { EmployeeService } from 'src/app/Services/employee.service';
   templateUrl: './expense-fields-rf.component.html',
   styleUrls: ['./expense-fields-rf.component.css'],
 })
-export class ExpenseFieldsRfComponent implements OnInit {
+export class ExpenseFieldsRfComponent implements OnInit{
   @Input() employeeForm: FormGroup;
   @Input() id:any;
+  @Input() singleEmployee!:Employee;
 
   constructor(private services:EmployeeService){}
+
   // expense id generate
   getEmplastlength=localStorage.getItem('data')==null?0:this.services.getEmployeeFromLocalStorage().length-1;
   getExpenseLastLength=localStorage.getItem('data')==null?0:this.services.getEmployeeFromLocalStorage()[this.getEmplastlength].expense.length-1
@@ -26,20 +30,47 @@ export class ExpenseFieldsRfComponent implements OnInit {
     { id: 2, Type: 'Travel' },
     { id: 3, Type: 'Others' },
   ];
-
+  expenseArray:Expense[]=[];
   ngOnInit(): void {
-    if(this.id){
-
-    }else{
+    if (this.id) {
+      this.NewExpenseList()
+    } else {
       this.AddNewExpense();
     }
+  }
+
+  NewExpenseList(){
+    this.totalCost=0;
+    this.singleEmployee.expense.forEach((x:Expense)=>{
+      this.totalCost+=x.cost;
+      this.item=this.employeeForm.get('expense') as FormArray;
+      this.item.push(this.ExistingValues(x))
+    })
+  }
+
+  ExistingValues(x){
+    return new FormGroup({
+      Expense_id: new FormControl(x.Expense_id, Validators.required),
+    Expense_name: new FormControl(x.Expense_name, Validators.required),
+    Type: new FormControl(x.Type, Validators.required),
+    Expense_Date: new FormControl(x.Expense_Date, Validators.required),
+    cost: new FormControl(x.cost, [
+      Validators.required,
+      Validators.max(1000.21),
+      Validators.pattern(/^\d+(\.\d{1,2})?$/)
+    ]),
+    employee_id: new FormControl(x.employee_id),
+    })
   }
 
   AddNewExpense() {
     this.item = this.employeeForm.get('expense') as FormArray;
     this.item.push(this.GetNewRow());
-
   }
+//
+GetItem(item){
+  console.log(item);
+}
 
   // Generate new row
   newval:number=0;
@@ -85,10 +116,10 @@ export class ExpenseFieldsRfComponent implements OnInit {
       this.totalCost=this.totalCost-item.value.cost;
       this.expenseList.controls=this.expenseList.controls.filter(x=>
         {
-          return x.value.Expense_id!=item.value.Expense_id
+
+          return x.value.Expense_id!=item.value.Expense_id;
         });
     }
 
-      console.log(this.expenseList.controls)
   }
 }

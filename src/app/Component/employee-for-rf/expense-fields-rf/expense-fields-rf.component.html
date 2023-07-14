@@ -11,7 +11,6 @@
 <div formArrayName="expense" *ngFor="let item of expenseList.controls;let i=index;">
     <div class="row mt-4" [formGroupName]="i">
 
-
         <div class="col-md-4">
             <label class="form-label">Expense Name</label>
             <input type="text" class="form-control" placeholder="Expense Name" name="expense_name" formControlName="Expense_name">
